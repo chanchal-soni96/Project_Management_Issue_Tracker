@@ -1,26 +1,986 @@
+
 @import "tailwindcss";
 
+/* ==============================
+   1. THEME
+================================ */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f6f8fc;
+  --foreground: #172033;
+  --primary: #4f46e5;
+  --primary-hover: #4338ca;
+  --border: #e8ecf3;
+  --muted: #8490a5;
+  --surface: #ffffff;
+  --success: #15803d;
+  --danger: #dc2626;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+* {
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
+  margin: 0;
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* ==============================
+   2. MAIN LAYOUT
+================================ */
+
+.app-shell {
+  max-width: 1250px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 48px 35px;
+}
+
+.app-header {
+  position: relative;
+  margin-bottom: 35px;
+  padding: 30px 32px;
+  background: linear-gradient(120deg, #ffffff, #f0f3ff);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: 0 5px 20px rgba(30, 41, 59, 0.035);
+}
+
+.app-header h1 {
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -1.2px;
+  margin: 0 0 9px;
+  color: #172033;
+}
+
+.app-header p {
+  color: var(--muted);
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* ==============================
+   3. AUTHENTICATION
+================================ */
+
+.auth-status {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.auth-status p {
+  color: #475569;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* ==============================
+   4. DASHBOARD GRID
+================================ */
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 360px minmax(0, 1fr);
+  gap: 25px;
+  align-items: start;
+}
+
+.panel {
+  min-width: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 26px;
+  box-shadow: 0 5px 22px rgba(15, 23, 42, 0.035);
+  transition: box-shadow 0.25s ease;
+}
+
+.panel:hover {
+  box-shadow: 0 8px 28px rgba(15, 23, 42, 0.055);
+}
+
+.panel h2 {
+  font-size: 19px;
+  font-weight: 750;
+  letter-spacing: -0.4px;
+  margin: 0 0 23px;
+  color: #1e293b;
+}
+
+/* ==============================
+   5. ISSUE FORM
+================================ */
+
+.issue-form {
+  display: flex;
+  flex-direction: column;
+  gap: 19px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.form-group label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #475569;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 13px 14px;
+  border: 1px solid #e2e8f0;
+  border-radius: 11px;
+  background: #fbfcff;
+  color: #172033;
+  outline: none;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #a0aabc;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  background: #ffffff;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.09);
+}
+
+.form-group textarea {
+  min-height: 125px;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+/* ==============================
+   6. BUTTONS
+================================ */
+
+.btn {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  padding: 11px 17px;
+  font-size: 13px;
+  font-weight: 700;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #ffffff;
+  box-shadow: 0 3px 8px rgba(79, 70, 229, 0.17);
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 5px 13px rgba(79, 70, 229, 0.22);
+}
+
+.btn-secondary {
+  background: #f1f5f9;
+  color: #334155;
+  border-color: #e2e8f0;
+}
+
+.btn-secondary:hover {
+  background: #e8edf5;
+  border-color: #cbd5e1;
+}
+
+.btn-danger {
+  background: #fff1f2;
+  color: #e11d48;
+  border-color: #ffe4e6;
+}
+
+.btn-danger:hover {
+  background: #ffe4e6;
+  color: #be123c;
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* ==============================
+   7. ISSUE LIST
+================================ */
+
+.issue-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.issue-card {
+  position: relative;
+  background: #ffffff;
+  border: 1px solid #e9edf4;
+  border-radius: 14px;
+  padding: 21px;
+  transition: all 0.25s ease;
+}
+
+.issue-card:hover {
+  transform: translateY(-3px);
+  border-color: #d8dcff;
+  box-shadow: 0 10px 25px rgba(30, 41, 59, 0.07);
+}
+
+.issue-title {
+  font-size: 16px;
+  font-weight: 750;
+  letter-spacing: -0.3px;
+  margin: 0 0 10px;
+  color: #1e293b;
+  overflow-wrap: anywhere;
+}
+
+.issue-description {
+  font-size: 13px;
+  color: #748096;
+  line-height: 1.75;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+/* ==============================
+   8. ISSUE META
+================================ */
+
+.issue-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 19px;
+  padding-top: 14px;
+  border-top: 1px solid #f0f2f7;
+  font-size: 12px;
+  color: #8490a5;
+}
+
+/* ==============================
+   9. STATUS BADGES
+================================ */
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 11px;
+  border-radius: 30px;
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 0.2px;
+}
+
+.status-open {
+  background: #ecfdf3;
+  color: #15803d;
+}
+
+.status-progress {
+  background: #fff7e6;
+  color: #b45309;
+}
+
+.status-closed {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+/* ==============================
+   10. ISSUE ACTIONS
+================================ */
+
+.issue-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 17px;
+}
+
+.issue-actions button {
+  font-size: 12px;
+  padding: 8px 14px;
+}
+
+/* ==============================
+   11. FORM FEEDBACK
+================================ */
+
+.form-message {
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 9px;
+}
+
+.success-message {
+  color: #15803d;
+  background: #ecfdf3;
+}
+
+.error-message {
+  color: #dc2626;
+  background: #fef2f2;
+}
+
+/* ==============================
+   12. EMPTY STATE
+================================ */
+
+.empty-state {
+  padding: 45px 18px;
+  text-align: center;
+  color: #8490a5;
+  background: #fafbff;
+  border: 1px dashed #d8deeb;
+  border-radius: 14px;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+/* ==============================
+   13. LOGIN PAGE
+================================ */
+
+.app-shell .panel > h1 {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.8px;
+  margin: 0 0 10px;
+}
+
+.app-shell .panel > p {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 22px;
+}
+
+/* ==============================
+   14. ACCESSIBILITY
+================================ */
+
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid rgba(79, 70, 229, 0.2);
+  outline-offset: 2px;
+}
+
+/* ==============================
+   15. RESPONSIVE DESIGN
+================================ */
+
+@media (max-width: 900px) {
+  .app-shell {
+    padding: 30px 22px;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .app-header {
+    padding: 25px;
+  }
+}
+
+@media (max-width: 600px) {
+  .app-shell {
+    padding: 20px 14px;
+  }
+
+  .app-header {
+    padding: 22px 19px;
+    border-radius: 15px;
+  }
+
+  .app-header h1 {
+    font-size: 26px;
+  }
+
+  .panel {
+    padding: 20px 17px;
+    border-radius: 14px;
+  }
+
+  .panel h2 {
+    font-size: 17px;
+  }
+
+  .issue-card {
+    padding: 17px;
+  }
+
+  .issue-meta {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .auth-status {
+    justify-content: flex-start;
+  }
+
+  .issue-actions {
+    gap: 8px;
+  }
+
+  .btn {
+    padding: 10px 13px;
+  }
+}
+
+
+/* ==============================
+   LOGIN PAGE DESIGN
+================================ */
+
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px 16px;
+  background:
+    radial-gradient(circle at 15% 15%, #e0e7ff 0, transparent 35%),
+    radial-gradient(circle at 85% 85%, #dbeafe 0, transparent 35%),
+    #f6f8fc;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 440px;
+  padding: 38px;
+  background: #ffffff;
+  border: 1px solid #e8ecf3;
+  border-radius: 22px;
+  box-shadow: 0 20px 60px rgba(30, 41, 59, 0.09);
+}
+
+.login-brand {
+  text-align: center;
+}
+
+.login-logo {
+  width: 58px;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 15px;
+  border-radius: 17px;
+  background: #4f46e5;
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: 800;
+  box-shadow: 0 7px 16px rgba(79, 70, 229, 0.25);
+}
+
+.login-brand h1 {
+  margin: 0 0 8px;
+  font-size: 26px;
+  font-weight: 800;
+  color: #172033;
+  letter-spacing: -0.8px;
+}
+
+.login-brand p,
+.login-content p {
+  color: #8490a5;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.login-divider {
+  height: 1px;
+  background: #edf0f5;
+  margin: 27px 0;
+}
+
+.login-content h2 {
+  margin: 0 0 7px;
+  font-size: 20px;
+  font-weight: 750;
+  color: #172033;
+}
+
+.login-content > p {
+  margin: 0 0 23px;
+}
+
+.login-content .btn {
+  width: 100%;
+  min-height: 46px;
+  font-size: 14px;
+}
+
+.login-content > div {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.login-content .btn-primary {
+  background: #24292f;
+  color: #ffffff;
+}
+
+.login-content .btn-primary:hover {
+  background: #3b424a;
+}
+
+.login-content .btn-secondary {
+  background: #ffffff;
+  border: 1px solid #dfe4ed;
+  color: #263247;
+}
+
+.login-content .btn-secondary:hover {
+  background: #f6f8fc;
+  border-color: #bfc8d8;
+}
+
+.login-footer {
+  margin-top: 25px;
+  padding-top: 18px;
+  border-top: 1px solid #edf0f5;
+  text-align: center;
+  color: #94a0b2;
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+@media (max-width: 480px) {
+  .login-card {
+    padding: 27px 21px;
+  }
+}
+
+.app-shell {
+  width: 100%;
+  max-width: 1250px;
+  margin: 0 auto;
+  padding: 45px 30px;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: minmax(320px, 0.9fr) minmax(0, 1.1fr);
+  gap: 25px;
+  align-items: start;
+}
+
+@media (max-width: 750px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+
+/* ==============================
+   DASHBOARD STATISTICS
+================================ */
+
+.issue-dashboard-content {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  min-width: 0;
+}
+
+.issue-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.stat-card {
+  padding: 17px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: #ffffff;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 7px 18px rgba(15, 23, 42, 0.06);
+}
+
+.stat-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.stat-label {
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.stat-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.stat-count {
+  margin: 12px 0 0;
+  color: #172033;
+  font-size: 27px;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+.stat-total .stat-icon {
+  color: #4f46e5;
+  background: #eef2ff;
+}
+
+.stat-open .stat-icon {
+  color: #15803d;
+  background: #ecfdf3;
+}
+
+.stat-progress .stat-icon {
+  color: #b45309;
+  background: #fff7e6;
+}
+
+.stat-closed .stat-icon {
+  color: #475569;
+  background: #f1f5f9;
+}
+
+/* ==============================
+   IMPROVED ISSUE CARDS
+================================ */
+
+.issue-card-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.issue-card-heading .issue-title {
+  min-width: 0;
+  margin-bottom: 0;
+  overflow-wrap: anywhere;
+}
+
+.issue-card-heading .status-badge {
+  flex-shrink: 0;
+}
+
+.empty-icon {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 30px;
+  color: #818cf8;
+}
+
+.empty-state h3 {
+  margin: 0 0 7px;
+  color: #334155;
+  font-size: 16px;
+}
+
+.empty-state p {
+  margin: 0;
+  color: #8490a5;
+  font-size: 13px;
+}
+
+@media (max-width: 600px) {
+  .issue-stats {
+    gap: 9px;
+  }
+
+  .stat-card {
+    padding: 13px;
+  }
+
+  .stat-count {
+    font-size: 23px;
+  }
+
+  .issue-card-heading {
+    flex-direction: column;
+  }
+}
+
+
+/* ==============================
+   ISSUE ACTION BUTTONS
+================================ */
+
+.issue-edit-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border: 1px solid #dbeafe;
+  border-radius: 8px;
+  background: #eff6ff;
+  color: #2563eb;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.issue-edit-button:hover {
+  background: #dbeafe;
+  border-color: #bfdbfe;
+}
+
+.issue-edit-button span {
+  font-size: 15px;
+}
+
+.issue-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 17px;
+}
+
+.delete-issue-form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.issue-actions .btn-danger {
+  padding: 8px 14px;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  background: #fff1f2;
+  color: #dc2626;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.issue-actions .btn-danger:hover {
+  background: #fee2e2;
+  border-color: #fca5a5;
+}
+
+/* ==============================
+   EDIT ISSUE FORM
+================================ */
+
+.edit-issue-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 18px;
+  margin-top: 12px;
+  border: 1px solid #e0e7ff;
+  border-radius: 12px;
+  background: #f8faff;
+}
+
+.edit-issue-form .form-group input,
+.edit-issue-form .form-group textarea {
+  background: #ffffff;
+}
+
+.edit-issue-form .form-group textarea {
+  min-height: 100px;
+}
+
+.edit-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.edit-form-actions button {
+  min-width: 110px;
+}
+
+.delete-issue-form .form-message {
+  margin-top: 8px;
+}
+
+@media (max-width: 480px) {
+  .edit-form-actions button {
+    flex: 1;
+  }
+}
+
+.issue-actions .issue-edit-button {
+  padding: 8px 14px;
+  border: 1px solid #dbeafe;
+  border-radius: 8px;
+  background: #eff6ff;
+  color: #2563eb;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.issue-actions .issue-edit-button:hover {
+  background: #dbeafe;
+  border-color: #bfdbfe;
+}
+
+/* App branding */
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header-logo {
+  width: 58px;
+  height: 58px;
+  min-width: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: linear-gradient(135deg, #6366f1, #4338ca);
+  color: #ffffff;
+
+  font-size: 21px;
+  font-weight: 800;
+  letter-spacing: -1px;
+
+  border-radius: 17px;
+  box-shadow: 0 7px 16px rgba(79, 70, 229, 0.25);
+}
+
+.header-brand h1 {
+  margin: 0 0 6px;
+  font-size: 27px;
+  font-weight: 800;
+}
+
+.header-brand p {
+  margin: 0;
+  color: #64748b;
+  font-size: 13px;
+}
+
+
+/* User profile */
+.auth-status {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.profile-avatar {
+  width: 43px;
+  height: 43px;
+  min-width: 43px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #e0e7ff;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.1);
+}
+
+.profile-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #6366f1, #4338ca);
+  color: white;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.profile-name {
+  color: #172033;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.profile-email {
+  color: #64748b;
+  font-size: 11px;
+}
+
+@media (max-width: 650px) {
+  .auth-status {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .profile-email {
+    max-width: 150px;
+    overflow-wrap: anywhere;
+  }
 }
